@@ -2,10 +2,10 @@
 # requires-python = ">=3.11"
 # dependencies = ["numpy"]
 # ///
-"""Named places of Helenaveen: style overrides and extra geometry for buildings, plus the viewer's place list.
+"""Named places of Edam: style overrides and extra geometry for buildings, plus the viewer's place list.
 
-Sources: Monumenten in Nederland, Noord-Brabant (1997), Rijksmonumenten photos on Wikimedia Commons,
-OpenStreetMap, and AHN for tower positions and heights.
+Sources: the Rijksmonumentenregister, Dutch Wikipedia, photos on Wikimedia Commons, OpenStreetMap, and AHN for
+tower positions and heights.
 
 Output: data/build/landmarks.json
 """
@@ -17,326 +17,258 @@ import numpy as np
 from config import BUILD, RAW
 from geo import wgs_to_rd
 
-HVT = "https://www.helenaveenvantoen.nl/"  # Het Helenaveen van toen, the village's own history site
+WP = "https://nl.wikipedia.org/wiki/"  # Dutch Wikipedia, where most of these stories are told at length
+RCE = "Rijksdienst voor het Cultureel Erfgoed"
 
 # Buildings found by an address or point; `pand` is resolved to the 3D BAG building under that point.
 BUILDINGS = [
     {
-        "name": "Sint-Willibrorduskerk",
-        "note": "Zaalkerk uit 1950 van J. Deltrap, sinds 2024 woningen",
-        "kind": "Voormalige kerk · 1950",
-        "stop": "Sint-Willibrorduskerk",
-        "at": (192080, 377790),
+        "name": "Grote of Sint-Nicolaaskerk",
+        "note": "Laatgotische hallenkerk, begonnen in de 15e eeuw, met de grootste gebrandschilderde ramen van het land",
+        "kind": "Rijksmonument · 15e eeuw",
+        "stop": "De Grote Kerk",
+        "addrs": ["Grote Kerkstraat 59"],
+        "address": "Grote Kerkstraat 59",
         "style": "church",
-        "wall": (146, 80, 62),
+        "wall": (138, 78, 60),
+        "roof": (74, 76, 84),
+        # The west tower, in AHN about 7 m square and 39.6 m to the top of its low spire.
+        "tower": {"x": 131917.2, "y": 503140.5, "w": 7.2, "body": 30.0, "top": 39.6, "cross": True},
+        "photo": ("Edam_-_SInt-Nicolaaskeerk_011.jpg", "De Grote Kerk in 2022, P. Hughes, CC BY 4.0"),
+        "web": "https://www.grotekerkedam.nl",
+    },
+    {
+        "name": "Speeltoren",
+        "note": "Scheve toren van de afgebroken Onze-Lieve-Vrouwekerk, met een carillon dat elk kwartier speelt",
+        "kind": "Rijksmonument · 16e eeuw",
+        "stop": "De Speeltoren",
+        "addrs": ["Lingerzijde 1"],
+        "address": "Lingerzijde 1",
+        "style": "church",
+        "wall": (140, 80, 62),
+        "roof": (90, 92, 100),
+        # In AHN: a 4.5 m square shaft to about 27 m, the octagonal lantern on top of it reaches 40 m.
+        "tower": {"x": 131901.0, "y": 502795.2, "w": 4.6, "body": 27.0, "top": 40.1},
+        "photo": ("Edam_023.JPG", "De Speeltoren in 2012, Microtoerisme, CC BY-SA 3.0"),
+    },
+    {
+        "name": "Raadhuis",
+        "note": "Stadhuis in Lodewijk XIV-stijl uit 1737, van bouwmeester Jacob Jongh",
+        "kind": "Rijksmonument · 1737",
+        "stop": "Het Raadhuis",
+        "addrs": ["Damplein 1"],
+        "address": "Damplein 1",
+        "style": "house",
+        "wall": (120, 68, 54),
         "roof": (70, 72, 80),
-        # Tower from AHN: about 4 m square near the north-west corner, 26 m to the top.
-        "tower": {"x": 192090.0, "y": 377807.4, "w": 4.6, "body": 19.0, "top": 25.5, "cross": True},
-    },
-    {
-        "name": "Protestantse kerk (1867)",
-        "note": "Neoclassicistisch zaalkerkje met dakruiter, rijksmonument",
-        "kind": "Rijksmonument · 1867",
-        "stop": "Protestantse kerk",
-        "at": (191907.3, 378307.1),
-        "style": "church",
-        "wall": (234, 230, 218),
-        "roof": (78, 80, 88),
-        # Dakruiter on the front, seen in AHN as a spike over the canal-side end of the ridge.
-        "turret": {"x": 191911.2, "y": 378298.7, "r": 1.0, "base": 9.4, "body": 12.6, "top": 16.8},
-    },
-    {
-        "name": "Zondagsschool (ca. 1880)",
-        "kind": "Ca. 1880",
-        "stop": "Zondagsschool",
-        "at": (191920.1, 378300.0),
-        "style": "house",
-        "wall": (152, 86, 66),
-        "roof": (82, 84, 90),
-        "frame": (236, 234, 226),
-    },
-    {
-        "name": "Pastorie (1867)",
-        "note": "Predikantenwoning, rijksmonument",
-        "kind": "Rijksmonument · 1867",
-        "stop": "Pastorie en kazemat",
-        "at": (191902.6, 378289.2),
-        "style": "house",
-        "wall": (150, 90, 70),
-        "roof": (66, 68, 74),
         "frame": (240, 238, 230),
+        # The little clock tower on the roof, 24.7 m up in AHN.
+        "turret": {"x": 132070.7, "y": 502794.2, "r": 1.3, "base": 12.0, "body": 19.5, "top": 24.7},
+        "photo": ("Edam,_Holland_5.jpg", "Het Raadhuis aan het Damplein in 2005, stevekc, CC BY 2.0"),
+        "web": "https://www.edamsmuseum.nl",
     },
     {
-        "name": "Basisschool De Peelparel",
-        "note": "Dorpsschool met zes lokalen uit ca. 1930",
-        "kind": "Basisschool",
-        "address": "Oude Peelstraat 10",
-        "web": "https://www.peelparel.nl",
-        "stop": "Dorpsschool De Peelparel",
-        "at": (191907.0, 377855.0),
-        "style": "school",
-        "wall": (176, 112, 96),
-        "roof": (186, 90, 60),
-        "bell": True,
-    },
-    {
-        "name": "Hoeve Willem III",
-        "note": "Kop-rompboerderij uit 1913, rijksmonument, nu ijsboerderij",
-        "kind": "Koningshoeve · 1913",
-        "address": "Soemeersingel 127",
-        "stop": "Willem III-hoeve",
-        "at": (190290.0, 381292.0),
+        "name": "Edams Museum (Steenen Coopmanshuys)",
+        "note": "Het oudste stenen huis van Edam, uit ca. 1540, met een drijvende kelder",
+        "kind": "Rijksmonument · ca. 1540",
+        "stop": "Het Steenen Coopmanshuys",
+        "addrs": ["Damplein 8"],
+        "address": "Damplein 8",
         "style": "house",
-        "wall": (126, 70, 56),
-        "roof": (74, 76, 82),
-        "frame": (238, 236, 228),
+        "wall": (132, 72, 56),
+        "roof": (150, 70, 50),
+        "frame": (236, 234, 226),
+        "photo": ("Edam_-_Damplein_8jpg.jpg", "Het Edams Museum aan het Damplein in 2010, Arch, publiek domein"),
+        "web": "https://www.edamsmuseum.nl",
     },
     {
-        "name": "Wilhelminahoeve",
-        "note": "Kop-rompboerderij uit 1908, rijksmonument",
-        "kind": "Koningshoeve · 1908",
-        "stop": "Wilhelminahoeve",
-        "at": (191131.0, 380087.0),
+        "name": "Kaaswaag",
+        "note": "Waaggebouw uit 1778 aan de Kaasmarkt, waar in de zomer op woensdag de kaasmarkt is",
+        "kind": "Rijksmonument · 1778",
+        "stop": "De Kaasmarkt",
+        "addrs": ["Jan Nieuwenhuizenplein 5"],
+        "address": "Jan Nieuwenhuizenplein 5",
         "style": "house",
-        "wall": (130, 72, 58),
-        "roof": (78, 80, 86),
-        "frame": (238, 236, 228),
+        "wall": (236, 232, 220),
+        "roof": (150, 68, 48),
+        "frame": (60, 90, 60),
+        "photo": ("Kaaswaag_Edam.JPG", "De Kaaswaag in 2011, Marion Golsteijn, CC BY-SA 3.0 NL"),
+        "web": "https://www.kaasmarktedam.nl",
     },
     {
-        "name": "Gemeenschapshuis De Gouden Helm",
-        "latlon": (51.38802, 5.91843),
-        "address": "Oude Peelstraat 3",
-        "web": "https://www.degoudenhelm.nl",
-        "stop": "Gemeenschapshuis De Gouden Helm",
+        "name": "Lutherse kerk (De Swaen)",
+        "note": "Evangelisch-lutherse kerk uit 1739-1741, met gevels in Lodewijk XIV-stijl, nu de protestantse kerk De Swaen",
+        "kind": "Rijksmonument · 1740",
+        "stop": "De Lutherse kerk",
+        "addrs": ["Voorhaven 135"],
+        "address": "Voorhaven 135",
+        "style": "church",
+        "wall": (134, 76, 58),
+        "roof": (72, 74, 82),
+        "photo": ("Edam,_Evangelisch_Lutherse_kerk.jpg", "De Lutherse kerk aan de Voorhaven in 2010, Arch, publiek domein"),
     },
     {
-        "name": "Hotel Eetcafé In d'Ouwe Peel",
-        "latlon": (51.38892, 5.91938),
-        "kind": "Hotel en eetcafé",
-        "address": "Oude Peelstraat 2",
-        "text": "Hotel en eetcafé midden in het dorp, tegenover de kerk.",
-        "web": "https://www.indouwepeel.nl",
-    },
-    {"name": "Voormalige tabaksschuur (ca. 1870)", "addrs": ["Geldersestraat 10", "Geldersestraat 12"], "kind": "Tabaksschuur · ca. 1870", "address": "Geldersestraat 10 en 12", "stop": "Tabaksschuur"},
-    # From Het Helenaveen van toen; the 3D BAG building years agree that these still stand.
-    {
-        "name": "Tabaksschuur Waldeck-Hoeve",
-        "addrs": ["Geldersestraat 3", "Geldersestraat 5"],
-        "kind": "Tabaksschuur",
-        "address": "Geldersestraat 3 en 5",
-        "text": "Een van de grote tabaksschuren aan de Geldersestraat, toen nog de Geldersche Laan. Een tijd stond de naam Waldeck-Hoeve op de zijgevel; nu zijn het twee huizen. Op de kaart van 1889 is de omgeving geel van de tabaksvelden.",
-        "more": HVT + "de-kaar-van-deel-1",
+        "name": "Proveniershuis",
+        "note": "In 1555 gesticht als tehuis voor ouderen die zich inkochten; de gebouwen zijn 17e- en 18e-eeuws",
+        "kind": "Rijksmonument · 1555",
+        "stop": "Het Proveniershuis",
+        "addrs": ["J C Brouwersgracht 30"],
+        "address": "J.C. Brouwersgracht 30",
+        "style": "house",
+        "wall": (138, 78, 60),
+        "roof": (150, 70, 50),
+        "frame": (240, 238, 230),
+        "photo": ("Proveniershuis_JC_Brouwersgracht_30_Edam_Rijksmonument_14292.jpg", "Het Proveniershuis in 2017, Edithnib, CC BY-SA 3.0 NL"),
     },
     {
-        "name": "Tabaksschuur Geldersestraat 4 en 6",
-        "addrs": ["Geldersestraat 4", "Geldersestraat 6"],
-        "kind": "Tabaksschuur",
-        "address": "Geldersestraat 4 en 6",
-        "text": "Schuin tegenover de Waldeck-Hoeve staat de volgende grote tabaksschuur van de Geldersestraat, uit de tijd dat hier tabak werd geteeld.",
-        "more": HVT + "de-kaar-van-deel-1",
+        "name": "Doopsgezinde vermaning",
+        "kind": "Rijksmonument · 1702",
+        "addrs": ["Jan Nieuwenhuizenplein 6"],
+        "address": "Jan Nieuwenhuizenplein 6",
+        "text": "Een schuilkerkje aan de Kaasmarkt uit 1702: de doopsgezinden mochten in de Republiek wel samenkomen, maar hun kerk mocht er van buiten niet als een kerk uitzien.",
     },
     {
-        "name": "Woonhuis van Jules de Corte",
-        "addrs": ["Geldersestraat 9"],
-        "kind": "Woonhuis",
-        "address": "Geldersestraat 9",
-        "text": "Zanger, pianist en liedjesschrijver Jules de Corte (1924-1996) woonde hier vanaf 1973 tot zijn dood, en werkte er vaak tot diep in de nacht aan zijn liedjes. Hij schreef er ruim 4000, waaronder Ik zou wel eens willen weten en Koning Onbenul.",
-        "more": HVT + "jules-de-corte",
+        "name": "Voormalig weeshuis",
+        "kind": "Rijksmonument · 19e eeuw",
+        "addrs": ["Jan Nieuwenhuizenplein 12"],
+        "address": "Jan Nieuwenhuizenplein 12",
+        "text": "Het weeshuis van Edam aan de Kaasmarkt, in het laatste kwart van de 19e eeuw gebouwd op de plek van zijn voorganger.",
     },
     {
-        "name": "Zuivelfabriekje De Fuke",
-        "addrs": ["Helenastraat 18"],
-        "kind": "Ca. 1896",
-        "address": "Helenastraat 18",
-        "text": "Martinus van de Mortel, Tinus de Fauts, begon hier een fabriekje voor roomboter, De Fuke. Het was niet rendabel genoeg en ging al snel weer dicht. Het gebouw staat er nog en is nu een woonhuis.",
-        "more": HVT + "geschiedenis-in-jaartallen",
-    },
-    # The other koningshoeven, from OpenStreetMap (names, BAG building years) and the Rijksmonumenten register.
-    {"name": "Emmahoeve", "latlon": (51.42026, 5.89746), "kind": "Koningshoeve · rijksmonument", "stop": "Emmahoeve"},
-    {
-        "name": "Julianahoeve",
-        "latlon": (51.41126, 5.90111),
-        "kind": "Koningshoeve · 1910",
-        "address": "Soemeersingel 107",
-        "text": "In 1910 bouwde de Maatschappij twee koningshoeven die bijna elkaars evenbeeld zijn: de Emmahoeve en deze Julianahoeve, die in 1911 klaar was. De eerste pachter was Johannes Dekker uit Noord-Holland. Nu is het Landgoed Julianahoeve, met een camping.",
-        "more": HVT + "de-juliana-hoeve",
-        "photo": ("Julianahoeve,_voor-_en_linker_zijgevel_-_Helenaveen_-_20107512_-_RCE.jpg", "De Julianahoeve in 1979, Rijksdienst voor het Cultureel Erfgoed, CC BY-SA 4.0"),
-        "web": "https://www.landgoed-julianahoeve.nl",
+        "name": "Sluiswachterswoning Oorgat",
+        "kind": "Rijksmonument",
+        "addrs": ["Oorgat 1"],
+        "address": "Oorgat 1",
+        "stop": "De stormvloed van 1916",
+        "text": "Het huis van de sluiswachter bij de zeesluis in het Oorgat. Achter het huis staat een stenen paal die aangeeft hoe hoog het water in januari 1916 stond, toen de Zuiderzee over de dijken kwam.",
     },
     {
-        "name": "Oranjehoeve",
-        "latlon": (51.40502, 5.91000),
-        "kind": "Koningshoeve · 1912",
-        "address": "Soemeersingel 87",
-        "text": "De Maatschappij Helenaveen bouwde deze koningshoeve in 1912, aan de Helenavaart bij het drooggelegde Soemeer, op de plek van een huis dat er in 1889 al stond. Tegenwoordig een groepsaccommodatie.",
-        "more": HVT + "de-kaar-van-deel-1",
-        "photo": ("Oranjehoeve_-_Helenaveen_-_20107510_-_RCE.jpg", "De Oranjehoeve in 1979, Rijksdienst voor het Cultureel Erfgoed, CC BY-SA 4.0"),
-        "web": "https://www.oranjehoeve.com/",
-    },
-    {
-        "name": "Jeugdgebouw De Wiek",
-        "addrs": ["Soemeersingel 31"],
-        "kind": "Voormalige school",
-        "address": "Soemeersingel 31",
-        "text": "Tot 1982 was dit de openbare lagere school De Zonnedauw, die er kwam toen de andere school van het dorp katholiek werd. Sinds 21 mei 1983 is het jeugdgebouw De Wiek, genoemd naar de wijken: de zijtakken van de peelkanalen waar turfschepen konden keren of aanleggen. Op de gevel zit een keramisch reliëf van de Deurnese kunstenaar Frans Jacobs, gemaakt bij De Porceleyne Fles.",
-        "more": HVT + "monumenten-en-kunst",
-    },
-    # Casemate 206S of the Peel-Raamstelling (OpenStreetMap way 949470200, BAG building from 1938).
-    {
-        "name": "Kazemat 206",
-        "at": (191902.8, 378260.3),
-        "kind": "Kazemat · 1938",
-        "text": "Een betonnen kazemat van de Peel-Raamstelling, van het type dat stekelvarken heet. Aan deze kant van de vaart stonden er drie, tussen de protestantse kerk en de Geldersestraat, bemand door soldaten van het 30ste Regiment Infanterie. Alleen nummer 206 staat er nog.",
-        "more": HVT + "de-peel-onder-vuur",
-    },
-    {"name": "Willem de Zwijgerhoeve", "latlon": (51.39099, 5.91658), "kind": "Boerderij · 1934"},
-    {"name": "Wehrmachthuisje", "at": (191577.0, 379760.0), "address": "Koolweg 40", "stop": "Het Wehrmachthuisje aan de Koolweg"},
-    {"name": "Keuterboerderij", "at": (191630.7, 379389.2), "kind": "Rijksmonument", "address": "Soemeersingel 75", "stop": "Keuterboerderij aan de Soemeersingel"},
-    # Businesses, from OpenStreetMap.
-    {
-        "name": "Cafetaria Van Veen",
-        "latlon": (51.38962, 5.91891),
-        "kind": "Cafetaria",
-        "address": "Dominee Swaluestraat 1",
-        "text": "De snackbar van het dorp: friet om mee te nemen, of op het terras.",
-    },
-    {
-        "name": "Esso Helenaveen",
-        "latlon": (51.37943, 5.90877),
-        "kind": "Tankstation",
-        "address": "Zinkskesweg 1",
-        "text": "Tankstation aan de A67, met een Spar express.",
+        "name": "Hotel De Fortuna",
+        "addrs": ["Spuistraat 3"],
+        "kind": "Hotel en restaurant",
+        "address": "Spuistraat 3",
+        "text": "Hotel-restaurant in een rij 17e-eeuwse huisjes aan het water van de Spuistraat, met een tuin aan de gracht.",
+        "web": "https://www.fortuna-edam.nl",
     },
 ]
 
 # Points without a building of their own.
 POINTS = [
+    # The fort is a bomb-proof barracks under a mound of earth: the 3D BAG has only its sheds, so it is a point on
+    # the OpenStreetMap fort polygon; AHN shows the mound.
     {
-        "name": "Monument voor de burgerslachtoffers",
-        "latlon": (51.38868, 5.91955),
-        "kind": "Oorlogsmonument · 1985",
-        "text": "Voor de inwoners die door deportatie of oorlogsgeweld omkwamen, onthuld op 4 mei 1985. Twee muurtjes staan voor de fundamenten van het dorp, die de oorlog doorstonden; daartegen rust een driehoekige steen als een dak, met 22 namen.",
-        "more": HVT + "monumenten-en-kunst",
-    },
-    {"name": "Beeld: de jager die het zwijn doodde", "latlon": (51.3887, 5.91966), "kind": "Oorlogsmonument · 1956", "stop": "De jager die het zwijn doodde"},
-    {"name": "Kunstwerk: kiepkarren met turf", "latlon": (51.38868, 5.91982), "kind": "Kunstwerk · 1978", "stop": "Kipkarren op het Kerkplein"},
-    {"name": "Borstbeeld koningin Juliana", "latlon": (51.38939, 5.91762), "kind": "Beeld", "stop": "Koningin Juliana"},
-    # The BGT art object on the corner of the green next to the church; AHN shows a 6 m tall structure there.
-    {
-        "name": "Jules de Corte-carillon",
-        "at": (192040.6, 377827.6),
-        "kind": "Carillon · 1975",
-        "address": "Hannes Joostenplein",
-        "text": "Op het grasveld naast de kerk hangt een carillon met 23 klokken van Eijsbouts uit Asten, betaald door het Koning Willem III-fonds. Bij de opening op 6 december 1975 begeleidde Jules de Corte de dorpsjeugd bij Hertog Jan: zijn debuut als beiaardier. Sinds 1996 draagt het carillon zijn naam, met op een bronzen plaat zijn regel: In de oude toren zingt het carillon.",
-        "more": HVT + "monumenten-en-kunst",
-    },
-    # The only BGT art object along the Pastoor Kerssemakersstraat.
-    {
-        "name": "Kunstwerk: Vierzijdige Driehoek",
-        "at": (191844.4, 377965.9),
-        "kind": "Kunstwerk · 1990",
-        "address": "Pastoor Kerssemakersstraat",
-        "text": "Stalen balken in rood, blauw en geel, van de Bredase kunstenaar Norbert Veeger. Burgemeester Van Genabeek onthulde het op 23 januari 1990.",
-        "more": HVT + "monumenten-en-kunst",
-    },
-    {"name": "Speeltuin 't Turfveldje", "latlon": (51.38773, 5.91842), "kind": "Speeltuin"},
-    # Aardbeiweg 2 is the Protestant cemetery, Aardbeiweg 4 the Catholic one (rijksmonumenten register, Wikidata).
-    {"name": "Protestantse begraafplaats (ca. 1885)", "latlon": (51.38613, 5.91274), "kind": "Rijksmonument", "stop": "Protestantse begraafplaats"},
-    {"name": "Katholieke begraafplaats", "latlon": (51.38511, 5.91346), "kind": "Begraafplaats", "stop": "Het katholieke kerkhof"},
-    {"name": "Sportpark", "latlon": (51.38566, 5.91100), "kind": "Sport"},
-    {
-        "name": "Romeins tempeltje",
-        "latlon": (51.39051, 5.90431),
-        "kind": "Monument · 1998",
-        "text": "Op de vindplaats van de Gouden Helm, die hier in 1910 uit het veen kwam. Joep Coppens maakte het tempeltje van basaltlava, brons en baksteen. In de gevel staat E PALUDE EMERGO: ik kwam boven uit het veen.",
-        "more": HVT + "monumenten-en-kunst",
-        "stop": "De Gouden Helm",
-    },
-    {"name": "Eijndepaal", "latlon": (51.38475, 5.93129), "kind": "Grenspaal"},
-    {"name": "Paal tussen Broemeer en Soemeer", "latlon": (51.40279, 5.91580), "kind": "Grenspaal"},
-    {"name": "Zendmast", "latlon": (51.37999, 5.90874), "kind": "Telecommast"},
-    {"name": "Camping De Peelkant", "latlon": (51.39878, 5.8964), "kind": "Camping", "address": "Centurioweg 7", "web": "https://www.peelkant.com/"},
-    {"name": "Camping de Peelweide", "latlon": (51.37558, 5.93315), "kind": "Camping", "address": "Spiesberg 23", "web": "https://www.peelweide.nl"},
-    {"name": "Camperplaats De Oude Hoeven", "latlon": (51.40924, 5.90605), "kind": "Camperplaats"},
-    {"name": "Brug Spiesberg", "latlon": (51.37756, 5.93492), "kind": "Brug"},
-    # Komoot's description of the monument, from its makers.
-    {
-        "name": "Herrezen uit de vergetelheid",
-        "latlon": (51.40615, 5.91761),
-        "kind": "Monument · 2021",
-        "text": "Voor de 21 mannen die tussen 1940 en 1954 omkwamen bij vijf vliegtuigcrashes in de Peel. Het monument geeft namen aan slachtoffers die lang anoniem bleven. Een initiatief van Piet Snellen en Sjaar Huijs, ontworpen door Ruud van der Beele en onthuld in oktober 2021.",
+        "name": "Fort bij Edam",
+        "at": (133293, 503416),
+        "kind": "Werelderfgoed · 1913",
+        "stop": "Het Fort bij Edam",
+        "address": "Oorgat 10",
+        "text": "Het laatste fort van de Stelling van Amsterdam, gebouwd in 1908-1913 bij het Oorgat om de zeedijk en de sluis te dekken: een bomvrij gebouw onder een aarden wal, met een gracht eromheen. Sinds 2005 houdt een stichting het open voor bezoek.",
+        "photo": ("Fort_bij_Edam_004.JPG", "Het Fort bij Edam in 2010, Janericloebe, publiek domein"),
+        "web": "https://www.fortbijedam.nl",
+        "more": WP + "Fort_bij_Edam",
     },
     {
-        "name": "Sporen die bleven",
-        "latlon": (51.40314, 5.91352),
-        "kind": "Oorlogsmonument · 1944-2004",
-        "text": "Voor de kerkrazzia van 8 oktober 1944. Uit Helenaveen werden 143 mensen weggevoerd; 26 mannen overleefden de oorlog niet. Het hoort bij een reeks die in 2004 in 45 dorpen tussen Maas en Peel werd geplaatst; kunstsmid Thijs van de Manakker maakte de smeedijzeren standaard.",
-        "more": HVT + "monumenten-en-kunst",
+        "name": "Damplein",
+        "at": (132058, 502806),
+        "kind": "Plein",
+        "stop": "De dam in de IJe",
+        "text": "Het hart van Edam: de dam in het riviertje de IJe (of E) waar het stadje rond 1230 naar is genoemd. Aan het plein staan het Raadhuis en het Edams Museum.",
     },
     {
-        "name": "Mijmerplek met de Hellehond",
-        "latlon": (51.40699, 5.90938),
-        "kind": "Kunstwerk",
-        "text": "Hier stond een Koningswoning, in 1888 gebouwd met een schenking van koning Willem III en in 1921 verwoest door een grote veenbrand. Op initiatief van Jan van Woezik is de oude huisput weer uitgegraven, met de Hellehond van de Helenaveense kunstenaar Dirk Verberne.",
-        "more": HVT + "monumenten-en-kunst",
+        "name": "Damsluis",
+        "at": (132036, 502806),
+        "kind": "Rijksmonument · 1795-1798",
+        "text": "De schutsluis onder het Damplein, uit 1795-1798, scheidt het water van de Voorhaven van de grachten en de polder erachter.",
+        "photo": ("Damsluis_Edam.jpg", "De Damsluis in 2011, Marion Golsteijn, CC BY-SA 3.0"),
     },
     {
-        "name": "Mijnenongeluk 1945",
-        "latlon": (51.38751, 5.91419),
-        "kind": "Oorlog",
-        "text": "Op 19 mei 1945 ruimden Frans van den Eijnden uit Liessel en korporaal Meindert Postma uit Drachten hier mijnen, waar de Lagebrugweg en de Oude Peelstraat samenkomen. Een springmijn ging af en beiden kwamen om.",
-        "more": HVT + "mijnenruimen-aan-de-lagebrugweg",
-    },
-    # Places that are gone.
-    {
-        "name": "Eerste school van Helenaveen",
-        "latlon": (51.38540, 5.92277),
-        "kind": "1861",
-        "text": "In 1861 stelde de Maatschappij hier, op de hoek van de Geldersestraat en de Jan Deckersstraat, een gebouwtje beschikbaar als eerste school. Aan de overkant lag de scheepstimmerwerf. Het was maar een tijdelijke oplossing: al snel kwam er een nieuwe school.",
-        "more": HVT + "scholen",
+        "name": "Kaasmarkt",
+        "at": (131950, 502940),
+        "kind": "Plein",
+        "stop": "De Kaasmarkt",
+        "photo": ("Kaasmarkt_Edam.jpg", "Kaasmarkt in Edam, 2006, Lupo, CC BY-SA 3.0"),
     },
     {
-        "name": "Eerste noodkerk en kerkhof",
-        "addr": "Fruitweg 2",
-        "kind": "1857",
-        "text": "Aan de Fruitweg werd in 1857 een katholieke noodkerk ingericht in de omgebouwde stal van een boerderij. Erbij lag het eerste kerkhof van Helenaveen, zo'n 20 bij 25 meter, waar 35 mensen werden begraven.",
-        "more": HVT + "kerkhof",
+        "name": "Kwakelbrug",
+        "at": (131919, 502658),
+        "kind": "Rijksmonument · 18e eeuw",
+        "stop": "De Kwakelbrug",
+        "text": "Een smalle houten ophaalbrug over de Schepenmakersdijk-gracht, net breed genoeg voor een voetganger. Het is een van de meest gefotografeerde plekjes van Edam.",
+        "photo": ("Kwakelbrug.JPG", "De Kwakelbrug in 2011, Marion Golsteijn, CC BY-SA 3.0 NL"),
     },
-    {"name": "Turfstrooiselfabriek", "at": (191854.0, 378594.0), "kind": "Rijksmonument, afgebrand in 2025", "stop": "Turfstrooiselfabriek"},
-    {"name": "Kunstwerk: Verleden Veen", "at": (192068.0, 377892.0), "kind": "Kunstwerk · 2006", "stop": "Verleden Veen"},
-    {"name": "Kunstwerk: Peeltroef", "at": (190176.0, 381262.0), "kind": "Kunstwerk · 2014", "stop": "Peeltroef"},
+    {
+        "name": "Stormvloedpaal 1916",
+        "at": (133452, 503245),
+        "kind": "Rijksmonument · 1916",
+        "stop": "De stormvloed van 1916",
+        "text": "Een stenen paal achter de sluiswachterswoning in het Oorgat met het peil van de stormvloed van 13 en 14 januari 1916, die het Waterland onder water zette en de aanleiding werd voor de Afsluitdijk.",
+    },
+    {
+        "name": "Oorgatsluis",
+        "at": (133434, 503192),
+        "kind": "Zeesluis",
+        "stop": "Voorhaven en Oorgat",
+        "text": "De sluis waarmee de Voorhaven van Edam aan het IJsselmeer ligt. Al in 1357, bij het stadsrecht, mocht Edam hier een haven naar zee maken.",
+    },
+    {
+        "name": "Vestingwal",
+        "at": (131800, 503260),
+        "kind": "Rijksmonument",
+        "stop": "De vesting",
+        "text": "De overblijfselen van de stadswallen van Edam, de Wester- en Noordervesting, met de singelgracht ervoor. De vesting omsloot het stadje vanaf de 16e eeuw; de Purmerpoort werd in 1835 afgebroken.",
+        "photo": ("Edam,_Omwalling_van_voormalige_Wester-,_Noordervesting.jpg", "De wal van de Noordervesting in 2011, M.arjon, CC BY-SA 3.0 NL"),
+    },
+    {"name": "Strandbad Edam", "at": (133760, 503150), "kind": "Strand", "text": "Het strandje van Edam aan het IJsselmeer, met een trap in de dijk en uitzicht tot Marken."},
+    {"name": "Jachthaven Edam", "at": (133650, 503260), "kind": "Jachthaven", "text": "De jachthaven buiten de dijk, waar de Voorhaven via het Oorgat op het IJsselmeer uitkomt."},
+    {
+        "name": "Standbeeld Jan Nieuwenhuyzen",
+        "at": (131965, 502930),
+        "kind": "Monument",
+        "text": "Jan Nieuwenhuyzen (1724-1806), doopsgezind predikant in Edam, richtte hier in 1784 de Maatschappij tot Nut van 't Algemeen op, die scholen en bibliotheken stichtte voor gewone mensen. Het plein van de Kaasmarkt draagt zijn naam.",
+    },
+    {
+        "name": "Joodse begraafplaats",
+        "at": (132678, 502971),
+        "kind": "Begraafplaats",
+        "text": "De Joodse begraafplaats van Edam aan de rand van de oude stad, bij de Oosterkade. Ernaast staat het monument De tochtgenoten voor de Joodse Edammers die in de oorlog werden weggevoerd.",
+        "more": WP + "Joodse_begraafplaats_(Edam)",
+    },
+    {
+        "name": "Monument De tochtgenoten",
+        "at": (132680, 502954),
+        "kind": "Oorlogsmonument",
+        "text": "Rachel beweent haar kinderen: een gedenkteken bij de Joodse begraafplaats voor de Joodse inwoners van Edam die de oorlog niet overleefden.",
+        "more": WP + "De_tochtgenoten",
+    },
+    {"name": "Egbert Snijder-monument", "at": (131818, 502555), "kind": "Kunstwerk", "more": WP + "Egbert_Snijder_monument"},
+    {
+        "name": "Trambrug",
+        "at": (131740, 502652),
+        "kind": "Spoorbrug",
+        "text": "Hier reed van 1888 tot 1932 de stoomtram van Amsterdam naar Edam; het tracé is nu een fietspad langs de vesting.",
+    },
+    {"name": "Camping Strandbad Edam", "at": (133608, 503488), "kind": "Camping", "web": "https://www.campingstrandbad.nl"},
+    {"name": "Natuurpark De Broeckgouw", "at": (133341, 502871), "kind": "Natuur"},
+    {"name": "Zeedijk", "at": (133900, 503700), "kind": "Dijk", "stop": "De stormvloed van 1916", "text": "De dijk tussen Edam en de polder Zeevang en het IJsselmeer, sinds 1932 geen zee meer maar een meer. Het Zuiderzeepad loopt erover."},
 ]
 
-# Series in the viewer's panel: a walk past these places, starting with the one nearest the village.
+# Series in the viewer's panel: a walk past these places, starting with the one nearest the centre.
 CATEGORIES = [
-    ("koningshoeven", "Koningshoeven", ["Wilhelminahoeve", "Emmahoeve", "Julianahoeve", "Oranjehoeve", "Hoeve Willem III"]),
-    ("historisch", "Historische gebouwen", [
-        "Protestantse kerk (1867)", "Pastorie (1867)", "Zondagsschool (ca. 1880)", "Voormalige tabaksschuur (ca. 1870)",
-        "Keuterboerderij", "Basisschool De Peelparel", "Sint-Willibrorduskerk", "Protestantse begraafplaats (ca. 1885)",
-        "Tabaksschuur Waldeck-Hoeve", "Tabaksschuur Geldersestraat 4 en 6", "Woonhuis van Jules de Corte", "Zuivelfabriekje De Fuke",
-        "Jeugdgebouw De Wiek",
+    ("binnenstad", "Monumenten in de binnenstad", [
+        "Raadhuis", "Edams Museum (Steenen Coopmanshuys)", "Damsluis", "Speeltoren", "Lutherse kerk (De Swaen)", "Kwakelbrug",
+        "Kaaswaag", "Doopsgezinde vermaning", "Voormalig weeshuis", "Proveniershuis", "Grote of Sint-Nicolaaskerk", "Vestingwal",
     ]),
-    ("oorlog", "Oorlog en herdenking", [
-        "Monument voor de burgerslachtoffers", "Beeld: de jager die het zwijn doodde", "Mijnenongeluk 1945", "Wehrmachthuisje",
-        "Sporen die bleven", "Herrezen uit de vergetelheid", "Kazemat 206",
-    ]),
-    ("kunst", "Kunst", [
-        "Kunstwerk: kiepkarren met turf", "Beeld: de jager die het zwijn doodde", "Borstbeeld koningin Juliana", "Kunstwerk: Verleden Veen",
-        "Kunstwerk: Peeltroef", "Mijmerplek met de Hellehond", "Romeins tempeltje", "Jules de Corte-carillon",
-        "Kunstwerk: Vierzijdige Driehoek",
-    ]),
-    ("verdwenen", "Verdwenen", ["Eerste school van Helenaveen", "Eerste noodkerk en kerkhof", "Turfstrooiselfabriek"]),
-    ("bedrijven", "Bedrijven", [
-        "Hotel Eetcafé In d'Ouwe Peel", "Cafetaria Van Veen", "Hoeve Willem III", "Oranjehoeve", "Julianahoeve", "Camping De Peelkant",
-        "Camping de Peelweide", "Camperplaats De Oude Hoeven", "Esso Helenaveen",
-    ]),
+    ("water", "Aan het water", ["Damsluis", "Kwakelbrug", "Oorgatsluis", "Sluiswachterswoning Oorgat", "Stormvloedpaal 1916", "Jachthaven Edam", "Strandbad Edam", "Zeedijk", "Fort bij Edam", "Trambrug"]),
+    ("herdenken", "Monumenten en herdenking", ["Standbeeld Jan Nieuwenhuyzen", "Joodse begraafplaats", "Monument De tochtgenoten", "Stormvloedpaal 1916", "Egbert Snijder-monument"]),
+    ("kaas", "Kaas", ["Kaasmarkt", "Kaaswaag"]),
+    ("bedrijven", "Bedrijven", ["Hotel De Fortuna", "Edams Museum (Steenen Coopmanshuys)", "Fort bij Edam", "Jachthaven Edam", "Camping Strandbad Edam"]),
 ]
 
 # What the viewer shows when a place is clicked; the rest of an entry is for the render.
 INFO = ("note", "kind", "text", "address", "web", "more", "photo", "stop")
 
-# A steel lattice telecom mast next to the A67 (three antenna entries in OSM, one structure in AHN).
-MASTS = [{"latlon": (51.37999, 5.90874), "height": 32.0, "base": 2.6, "tip": 0.7}]
+# No lattice masts in the area yet; see scripts/landmarks.py of Isometric Helenaveen for the format.
+MASTS = []
 
 
 def point_in_ring(x, y, ring):
@@ -354,7 +286,7 @@ def address_xy(name):
     """RD position of a BAG address such as "Geldersestraat 3" (data/raw/addresses.json, from scripts/fetch.py)."""
     global ADDRESSES
     if ADDRESSES is None:
-        ADDRESSES = {label.replace(", Helenaveen", "").split(", ")[0]: (x, y) for x, y, label in json.loads((RAW / "addresses.json").read_text())}
+        ADDRESSES = {label.replace(", Edam", "").split(", ")[0]: (x, y) for x, y, label in json.loads((RAW / "addresses.json").read_text())}
     return ADDRESSES[name]
 
 
@@ -383,6 +315,9 @@ def main():
             x, y = np.mean(pts, axis=0)
             out["places"].append({"name": b["name"], "note": b.get("note"), "x": x, "y": y, "h": 4.0})
             out["hotspots"].append({"name": b["name"], "pids": pids, "x": x, "y": y, **{k: b[k] for k in INFO if k in b}})
+            if "style" in b:
+                for pid in pids:
+                    out["buildings"][pid] = {k: v for k, v in b.items() if k not in ("at", "latlon", "addrs", *INFO)}
             print(f"{b['name']}: {', '.join(pids)}")
             continue
         x, y = b["at"] if "at" in b else wgs_to_rd(*b["latlon"])

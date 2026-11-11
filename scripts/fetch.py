@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from config import CHUNK, NX, NY, RAW, XMAX, XMIN, YMAX, YMIN
 
-UA = {"User-Agent": "isometric-helenaveen/0.1"}
+UA = {"User-Agent": "isometric-edam/0.1"}
 RD = "http://www.opengis.net/def/crs/EPSG/0/28992"
 
 BGT_COLLECTIONS = [
@@ -54,23 +54,46 @@ def get(url, binary=False, tries=5):
             time.sleep(2 * (attempt + 1))
 
 
-def fetch_3dbag():
-    out = RAW / "3dbag.jsonl"
+def fetch_3dbag_chunk(ix, iy, chunk=CHUNK):
+    """One square of 3D BAG buildings; the API serves 50 a page, so the squares are fetched side by side."""
+    d = RAW / "3dbag"
+    d.mkdir(exist_ok=True)
+    out = d / f"{ix}_{iy}.jsonl"
     if out.exists():
         return
-    url = f"https://api.3dbag.nl/collections/pand/items?bbox={XMIN},{YMIN},{XMAX},{YMAX}&limit=100"
+    x0, y0 = XMIN + ix * chunk, YMIN + iy * chunk
+    url = f"https://api.3dbag.nl/collections/pand/items?bbox={x0},{y0},{x0 + chunk},{y0 + chunk}&limit=100"
     n = 0
     with open(out.with_suffix(".tmp"), "w") as f:
         while url:
             page = get(url)
-            transform = page["metadata"]["transform"]
-            for feat in page["features"]:
+            # A square with nothing in it (open water) comes without metadata.
+            transform = page.get("metadata", {}).get("transform")
+            for feat in page.get("features", []):
                 feat["transform"] = transform
                 f.write(json.dumps(feat) + "\n")
                 n += 1
-            url = next((l["href"] for l in page["links"] if l["rel"] == "next"), None)
-            print(f"3dbag {n}/{page['numberMatched']}", file=sys.stderr)
+            url = next((l["href"] for l in page.get("links", []) if l["rel"] == "next"), None)
+    print(f"3dbag {ix}_{iy}: {n}/{page.get('numberMatched', 0)}", file=sys.stderr)
     out.with_suffix(".tmp").rename(out)
+
+
+def fetch_3dbag():
+    """All squares into one file, each building once (a building on a square's edge is in both)."""
+    out = RAW / "3dbag.jsonl"
+    if out.exists():
+        return
+    seen = set()
+    with open(out.with_suffix(".tmp"), "w") as f:
+        for ix in range(NX):
+            for iy in range(NY):
+                for line in open(RAW / "3dbag" / f"{ix}_{iy}.jsonl"):
+                    fid = json.loads(line)["id"]
+                    if fid not in seen:
+                        seen.add(fid)
+                        f.write(line)
+    out.with_suffix(".tmp").rename(out)
+    print(f"3dbag: {len(seen)} buildings", file=sys.stderr)
 
 
 def fetch_bgt(coll):
@@ -133,14 +156,14 @@ def fetch_ahn(cov, ix, iy, chunk=CHUNK):
 
 
 def fetch_addresses():
-    """Every BAG address in Helenaveen, for the viewer's search box."""
+    """Every BAG address in Edam, for the viewer's search box."""
     out = RAW / "addresses.json"
     if out.exists():
         return
     pts, start = [], 0
     while True:
         q = urllib.parse.urlencode(
-            {"q": "*", "fq": ["woonplaatsnaam:Helenaveen", "type:adres"], "fl": "weergavenaam,centroide_rd", "rows": 100, "start": start},
+            {"q": "*", "fq": ["woonplaatsnaam:Edam", "type:adres"], "fl": "weergavenaam,centroide_rd", "rows": 100, "start": start},
             doseq=True,
         )
         d = get(f"https://api.pdok.nl/bzk/locatieserver/search/v3_1/free?{q}")["response"]
@@ -214,12 +237,14 @@ out geom;"""
 
 def main():
     RAW.mkdir(parents=True, exist_ok=True)
-    jobs = [fetch_3dbag, fetch_addresses, fetch_osm, fetch_routes, fetch_roads, *(lambda c=c: fetch_bgt(c) for c in BGT_COLLECTIONS)]
+    jobs = [fetch_addresses, fetch_osm, fetch_routes, fetch_roads, *(lambda c=c: fetch_bgt(c) for c in BGT_COLLECTIONS)]
+    jobs += [lambda i=i, j=j: fetch_3dbag_chunk(i, j) for i in range(NX) for j in range(NY)]
     jobs += [lambda c=c, i=i, j=j: fetch_ahn(c, i, j) for c in ("dsm_05m", "dtm_05m") for i in range(NX) for j in range(NY)]
     jobs += [lambda i=i, j=j: fetch_aerial(i, j) for i in range(NX) for j in range(NY)]
     with ThreadPoolExecutor(8) as pool:
         for fut in [pool.submit(j) for j in jobs]:
             fut.result()
+    fetch_3dbag()
     print("done", file=sys.stderr)
 
 

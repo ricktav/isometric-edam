@@ -1,4 +1,4 @@
-// Render the isometric map tile by tile in headless Chromium (hardware WebGL via Vulkan).
+// Render the isometric map tile by tile in headless Chromium (hardware WebGL via Vulkan, or Metal on a Mac).
 //
 //   node render/run.mjs crop <x> <y> <w> <h> [--scale 3] [--out file.png]   one region, for iterating
 //   node render/run.mjs all [--scale 3] [--tile 2048]                       every tile into out/tiles/
@@ -36,7 +36,9 @@ async function openScene(scale, kuwahara, pass, look) {
   const server = await serve();
   const browser = await chromium.launch({
     headless: true,
-    args: ['--use-angle=vulkan', '--ignore-gpu-blocklist', '--enable-gpu-rasterization'],
+    // Vulkan on Linux; on a Mac ANGLE's Vulkan is only SwiftShader (8192 px textures, too small for the roof atlas),
+    // so Metal drives the real GPU there.
+    args: [`--use-angle=${process.platform === 'darwin' ? 'metal' : 'vulkan'}`, '--ignore-gpu-blocklist', '--enable-gpu-rasterization'],
   });
   const page = await browser.newPage();
   page.on('console', (m) => m.type() === 'error' && console.error('page:', m.text()));

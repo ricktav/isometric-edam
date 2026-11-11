@@ -7,8 +7,8 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw"
 BUILD = ROOT / "data" / "build"
 
-# Helenaveen with the Soemeersingel north to the Willem III-hoeve: 3.5 x 5.5 km.
-XMIN, YMIN, XMAX, YMAX = 189850, 376350, 193350, 381850
+# Edam with the Fort bij Edam, the IJsselmeer dike and the polders around it: 4 x 4 km.
+XMIN, YMIN, XMAX, YMAX = 130500, 501000, 134500, 505000
 CX, CY = (XMIN + XMAX) / 2, (YMIN + YMAX) / 2
 
 # Downloads and ground textures come in square chunks of this many meters.
