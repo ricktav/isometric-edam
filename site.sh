@@ -53,5 +53,7 @@ cp viewer/index.html viewer/en.json viewer/og.png data/build/places.json data/bu
 cp -r data/build/history "$SITE/history"
 [ -d data/build/photos ] && cp -r data/build/photos "$SITE/photos"
 cp -r viewer/music "$SITE/music"
+# Fonts and OpenSeadragon come from the site itself, so visitors make no requests to Google or a CDN.
+cp -r viewer/vendor "$SITE/vendor"
 touch "$SITE/.nojekyll"
 echo "$SITE/ is ready: $(find "$SITE" -type f | wc -l) files, $(du -sh "$SITE" | cut -f1)"

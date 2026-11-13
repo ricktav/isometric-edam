@@ -15,8 +15,7 @@
 <meta property="og:image:alt" content="Edam in isometrische pixel art op een avond, met de Speeltoren, de grachten en brandende straatlantaarns">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://ricktav.github.io/isometric-edam/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="vendor/fonts.css">
 <style>
   /* Layout: the map fills the screen; small night-sky panels float in its corners, tilt-shift blur on the top and bottom edges. */
   :root {
@@ -477,17 +476,16 @@ Werk stap voor stap, controleer de licenties van de data die je gebruikt, en vra
   </nav>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.1/openseadragon.min.js"></script>
+<script src="vendor/openseadragon.min.js"></script>
 <script>
   // The render's projection (render/scene.js): 2:1 isometric, camera looking north-east.
   // map.json holds the image size, scale and area, written by render/run.mjs.
   let M = null, viewer = null;
 
-  // Language: Dutch or English, after the browser's language; a link can ask for one (?lang=en). Static text carries its English in data-en (text), data-en-html, data-en-label (aria-label),
+  // Language: Dutch unless a link asks for English (?lang=en). Static text carries its English in data-en (text), data-en-html, data-en-label (aria-label),
   // data-en-title and data-en-placeholder; text from the data files is looked up by its Dutch in en.json.
   const askedLang = new URLSearchParams(location.search).get('lang');
-  const LANG = askedLang === 'en' || askedLang === 'nl' ? askedLang
-    : (navigator.languages || [navigator.language]).some((l) => /^nl\b/i.test(l || '')) ? 'nl' : 'en';
+  const LANG = askedLang === 'en' ? 'en' : 'nl';
   let EN = {};
   const T = (text) => (LANG === 'en' && text && EN[text]) || text;
   const L = (nl, en) => (LANG === 'en' ? en : nl);
