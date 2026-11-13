@@ -1,0 +1,357 @@
+{
+ "stops": [
+  {
+   "n": 1,
+   "year": "ca. 1230",
+   "title": "Een dam in de IJe",
+   "text": "Edam begint als een dam in het veenriviertje de IJe, ook wel de E, dat hier in de Zuiderzee uitmondde. Rond 1230 worden de zeegaten in Waterland afgedamd, en bij de dam groeit een nederzetting van vissers en handelaars: IJedam, later Edam.",
+   "x": 132058,
+   "y": 502806,
+   "h": 0,
+   "zoom": 0.3,
+   "source": {
+    "label": "Wikipedia: Edam",
+    "url": "https://nl.wikipedia.org/wiki/Edam"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Edam",
+   "photos": []
+  },
+  {
+   "n": 2,
+   "year": "1737",
+   "title": "Het Raadhuis",
+   "text": "Op 18 mei 1737 legt Roelof Boot de eerste steen van het nieuwe stadhuis aan het Damplein, ontworpen door Jacob Jongh in Lodewijk XIV-stijl, met een zandstenen ingang onder het stadswapen. Binnen hangt nog het beschilderde behang van Willem Rave uit 1738. Nu zit de VVV beneden en trouwt Edam er nog steeds.",
+   "x": 132076,
+   "y": 502789,
+   "h": 8,
+   "zoom": 1.2,
+   "source": {
+    "label": "Wikipedia: Raadhuis van Edam",
+    "url": "https://nl.wikipedia.org/wiki/Raadhuis_van_Edam"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Raadhuis_van_Edam",
+   "photos": [
+    {
+     "src": "history/09_0.jpg?v=daafb14c",
+     "credit": "Het Raadhuis in 2005, stevekc, CC BY 2.0",
+     "url": "https://commons.wikimedia.org/wiki/File:Edam%2C_Holland_5.jpg"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "year": "1740",
+   "title": "De Lutherse kerk",
+   "text": "Aan de Voorhaven bouwen de lutheranen in 1739-1741 hun eigen kerk, met gevels in Lodewijk XIV-stijl. Het is een van de 176 rijksmonumenten van Edam.",
+   "x": 132105,
+   "y": 502808,
+   "h": 8,
+   "zoom": 1.2,
+   "source": {
+    "label": "Rijksmonumentenregister",
+    "url": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14421"
+   },
+   "more": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14421",
+   "photos": [
+    {
+     "src": "history/10_0.jpg?v=daafb14c",
+     "credit": "De Lutherse kerk in 2010, Arch (publiek domein)",
+     "url": "https://commons.wikimedia.org/wiki/File:Edam%2C_Evangelisch_Lutherse_kerk.jpg"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "year": "1795",
+   "title": "De Damsluis",
+   "text": "Onder het Damplein ligt de Damsluis uit 1795-1798, die het water van de Voorhaven scheidt van de grachten en de polders. Tot ver in de 19e eeuw kon de Zuiderzee bij hoog water tot hier het grondwater opstuwen.",
+   "x": 132066,
+   "y": 502811,
+   "h": 0,
+   "zoom": 1.2,
+   "source": {
+    "label": "Rijksmonumentenregister",
+    "url": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14401"
+   },
+   "more": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14401",
+   "photos": [
+    {
+     "src": "history/12_0.jpg?v=daafb14c",
+     "credit": "De Damsluis in 2011, Marion Golsteijn, CC BY-SA 3.0",
+     "url": "https://commons.wikimedia.org/wiki/File:Damsluis_Edam.jpg"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "year": "1357",
+   "title": "Voorhaven en Oorgat",
+   "text": "In 1357 krijgt Edam stadsrechten van graaf Willem V, met het recht om twee nieuwe havens naar zee te graven: de Voorhaven en het Oorgat. Scheepsbouw, haringvisserij en kaashandel brengen het stadje in de eeuwen daarna tot bloei. In 1544 beveelt Karel V de open verbinding met de Zuiderzee te sluiten; in 1570 slaan de Edammers de sluisdeuren weer kapot.",
+   "x": 133434,
+   "y": 503192,
+   "h": 0,
+   "zoom": 0.6,
+   "source": {
+    "label": "Wikipedia: Edam",
+    "url": "https://nl.wikipedia.org/wiki/Edam"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Edam",
+   "photos": []
+  },
+  {
+   "n": 6,
+   "year": "1916",
+   "title": "De stormvloed",
+   "text": "In de nacht van 13 op 14 januari 1916 jaagt een noordwesterstorm de Zuiderzee over de dijken van Waterland. Achter de sluiswachterswoning in het Oorgat staat een stenen paal met het peil van die nacht. De ramp werd de aanleiding voor de Afsluitdijk; sinds 1932 ligt Edam aan een meer.",
+   "x": 133452,
+   "y": 503245,
+   "h": 0,
+   "zoom": 1.2,
+   "source": {
+    "label": "Wikipedia: Edam",
+    "url": "https://nl.wikipedia.org/wiki/Edam"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Zuiderzeevloed_van_1916",
+   "photos": []
+  },
+  {
+   "n": 7,
+   "year": "1913",
+   "title": "Het Fort bij Edam",
+   "text": "Het laatste fort van de Stelling van Amsterdam, gebouwd in 1908-1913 bij het Oorgat om de zeedijk en de sluis te dekken. In de Eerste Wereldoorlog was het bemand, in de Tweede gebruikte de Wehrmacht het, en tot 1980 lagen er wapens en munitie. Sinds 2005 houdt een stichting het open; de Stelling is werelderfgoed.",
+   "x": 133293,
+   "y": 503416,
+   "h": 4,
+   "zoom": 0.6,
+   "source": {
+    "label": "Wikipedia: Fort bij Edam",
+    "url": "https://nl.wikipedia.org/wiki/Fort_bij_Edam"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Fort_bij_Edam",
+   "photos": [
+    {
+     "src": "history/14_0.jpg?v=daafb14c",
+     "credit": "Het Fort bij Edam in 2010, Janericloebe (publiek domein)",
+     "url": "https://commons.wikimedia.org/wiki/File:Fort_bij_Edam_004.JPG"
+    },
+    {
+     "src": "history/14_1.jpg?v=daafb14c",
+     "credit": "Het fort vanuit de lucht in 1927, Nederlands Instituut voor Militaire Historie, CC BY-SA 4.0",
+     "url": "https://commons.wikimedia.org/wiki/File:NIMH_-_2011_-_2918_-_Aerial_photograph_of_Fort_bij_Edam%2C_The_Netherlands.jpg"
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "year": "1616",
+   "title": "Trijntje Keever, het Groote Meisje",
+   "text": "Trijntje Cornelisdochter Keever wordt in april 1616 in Edam geboren en groeit uit tot mogelijk de langste vrouw die ooit heeft geleefd: 2,54 meter. Haar ouders laten haar op kermissen zien. Ze sterft in 1633, zeventien jaar oud, en wordt in de Grote Kerk begraven. Haar levensgrote portret hangt in het Edams Museum.",
+   "x": 131956,
+   "y": 503137,
+   "h": 15,
+   "zoom": 1.2,
+   "source": {
+    "label": "Wikipedia: Trijntje Keever",
+    "url": "https://nl.wikipedia.org/wiki/Trijntje_Keever"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Trijntje_Keever",
+   "photos": [
+    {
+     "src": "history/08_0.jpg?v=daafb14c",
+     "credit": "Trijntje Keever, portret uit 1633 (publiek domein)",
+     "url": "https://commons.wikimedia.org/wiki/File:Trijntje_Keever.jpg"
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "year": "15e eeuw",
+   "title": "De Grote Kerk",
+   "text": "In de nieuwe stadsuitbreiding aan de noordkant verrijst in de 15e eeuw de Grote of Sint-Nicolaaskerk, een van de grootste hallenkerken van het land. Na een brand in 1602 komen er de beroemde gebrandschilderde ramen, geschonken door steden en rijke families. In 1699 slaat de bliksem in de torenspits; de toren bleef daarna laag.",
+   "x": 131956,
+   "y": 503137,
+   "h": 15,
+   "zoom": 1.2,
+   "source": {
+    "label": "Wikipedia: Grote of Sint-Nicolaaskerk",
+    "url": "https://nl.wikipedia.org/wiki/Grote_of_Sint-Nicolaaskerk_(Edam)"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Grote_of_Sint-Nicolaaskerk_(Edam)",
+   "photos": [
+    {
+     "src": "history/04_0.jpg?v=daafb14c",
+     "credit": "De Grote Kerk in 2022, P. Hughes, CC BY 4.0",
+     "url": "https://commons.wikimedia.org/wiki/File:Edam_-_SInt-Nicolaaskeerk_011.jpg"
+    },
+    {
+     "src": "history/04_1.jpg?v=daafb14c",
+     "credit": "De Grote Kerk in 2010, Arch (publiek domein)",
+     "url": "https://commons.wikimedia.org/wiki/File:Edam_Grote_of_Sint-Nicolaaskerk.jpg"
+    }
+   ]
+  },
+  {
+   "n": 10,
+   "year": "1835",
+   "title": "De vesting",
+   "text": "Edam was een vestingstadje: de Wester- en Noordervesting met hun wallen en de singelgracht zijn er nog. De Purmerpoort, de stadspoort aan de westkant, werd in 1835 afgebroken. De meermin van Edam, het beeld dat de poort sierde, is nu te zien in het Edams Museum.",
+   "x": 131800,
+   "y": 503260,
+   "h": 0,
+   "zoom": 0.6,
+   "source": {
+    "label": "Wikipedia: Edams Museum",
+    "url": "https://nl.wikipedia.org/wiki/Edams_Museum"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Edams_Museum",
+   "photos": [
+    {
+     "src": "history/13_0.jpg?v=daafb14c",
+     "credit": "De wal van de Noordervesting in 2011, M.arjon, CC BY-SA 3.0 NL",
+     "url": "https://commons.wikimedia.org/wiki/File:Edam%2C_Omwalling_van_voormalige_Wester-%2C_Noordervesting.jpg"
+    }
+   ]
+  },
+  {
+   "n": 11,
+   "year": "1555",
+   "title": "Het Proveniershuis",
+   "text": "In 1555 gesticht als tehuis voor ouderen die zich met geld of goed inkochten, de proveniers. De huidige gebouwen aan de J.C. Brouwersgracht zijn 17e- en 18e-eeuws en staan rond een stille binnentuin.",
+   "x": 131888,
+   "y": 503076,
+   "h": 6,
+   "zoom": 1.2,
+   "source": {
+    "label": "Rijksmonumentenregister",
+    "url": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14292"
+   },
+   "more": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14292",
+   "photos": [
+    {
+     "src": "history/07_0.jpg?v=daafb14c",
+     "credit": "Het Proveniershuis in 2017, Edithnib, CC BY-SA 3.0 NL",
+     "url": "https://commons.wikimedia.org/wiki/File:Proveniershuis_JC_Brouwersgracht_30_Edam_Rijksmonument_14292.jpg"
+    }
+   ]
+  },
+  {
+   "n": 12,
+   "year": "1526",
+   "title": "De Kaasmarkt",
+   "text": "Op 16 april 1526 geeft Karel V Edam het recht op een vrije weekmarkt en een waag. In 1574 maakt Willem van Oranje dat waagrecht eeuwigdurend, als dank voor de hulp bij het ontzet van Alkmaar. Eeuwenlang wordt hier Edammer kaas verhandeld, tot 1922. Sinds 1989 is er in juli en augustus elke woensdagochtend weer een kaasmarkt, met kaasdragers en kaasmeisjes.",
+   "x": 131950,
+   "y": 502940,
+   "h": 0,
+   "zoom": 1.2,
+   "source": {
+    "label": "Wikipedia: Kaasmarkt",
+    "url": "https://nl.wikipedia.org/wiki/Kaasmarkt_(Edam)"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Kaasmarkt_(Edam)",
+   "photos": [
+    {
+     "src": "history/05_0.jpg?v=daafb14c",
+     "credit": "Kaasmarkt in Edam, 2006, Lupo, CC BY-SA 3.0",
+     "url": "https://commons.wikimedia.org/wiki/File:Kaasmarkt_Edam.jpg"
+    },
+    {
+     "src": "history/05_1.jpg?v=daafb14c",
+     "credit": "De Kaaswaag uit 1778, Marion Golsteijn, CC BY-SA 3.0 NL",
+     "url": "https://commons.wikimedia.org/wiki/File:Kaaswaag_Edam.JPG"
+    }
+   ]
+  },
+  {
+   "n": 13,
+   "year": "1310",
+   "title": "De Speeltoren",
+   "text": "De oudste kern van het stadje ligt rond de Onze-Lieve-Vrouwekerk, de Kleine Kerk, gesticht in 1310. De kerk werd in 1883 afgebroken; alleen de toren met zijn 16e-eeuwse achtkante lantaarn bleef staan. Bij werk in 1972 dreigde hij om te vallen en werd hij gestut, maar sindsdien staat hij scheef. Het carillon speelt elk kwartier.",
+   "x": 131901,
+   "y": 502795,
+   "h": 20,
+   "zoom": 1.2,
+   "source": {
+    "label": "Wikipedia: Speeltoren",
+    "url": "https://nl.wikipedia.org/wiki/Speeltoren_(Edam)"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Speeltoren_(Edam)",
+   "photos": [
+    {
+     "src": "history/02_0.jpg?v=daafb14c",
+     "credit": "De Speeltoren in 2012, Microtoerisme, CC BY-SA 3.0",
+     "url": "https://commons.wikimedia.org/wiki/File:Edam_023.JPG"
+    },
+    {
+     "src": "history/02_1.jpg?v=daafb14c",
+     "credit": "De Speeltoren en de Kleine Kerk rond 1790, Hendrik Tavenier (publiek domein)",
+     "url": "https://commons.wikimedia.org/wiki/File:Speeltoren_Edam_door_Hendrik_Tavenier.jpg"
+    }
+   ]
+  },
+  {
+   "n": 14,
+   "year": "18e eeuw",
+   "title": "De Kwakelbrug",
+   "text": "Een smal houten ophaalbruggetje, een kwakel, over het water bij het Doelland. De brug is een rijksmonument en een van de meest gefotografeerde plekjes van het stadje.",
+   "x": 131930,
+   "y": 502590,
+   "h": 0,
+   "zoom": 1.2,
+   "source": {
+    "label": "Rijksmonumentenregister",
+    "url": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14379"
+   },
+   "more": "https://monumentenregister.cultureelerfgoed.nl/monumenten/14379",
+   "photos": [
+    {
+     "src": "history/11_0.jpg?v=daafb14c",
+     "credit": "De Kwakelbrug in 2011, Marion Golsteijn, CC BY-SA 3.0 NL",
+     "url": "https://commons.wikimedia.org/wiki/File:Kwakelbrug.JPG"
+    }
+   ]
+  },
+  {
+   "n": 15,
+   "year": "ca. 1540",
+   "title": "Het Steenen Coopmanshuys",
+   "text": "Het oudste stenen huis van Edam, gebouwd rond 1540 voor een koopman, heeft een kelder die los van het huis op het grondwater drijft en meebeweegt met het peil. De gemeente kocht het huis in 1893 op een veiling, liet het door Pierre Cuypers restaureren en opende er in 1895 het Edams Museum. In 1962 stond het model voor het Delfts blauwe huisje van de KLM.",
+   "x": 132046,
+   "y": 502828,
+   "h": 8,
+   "zoom": 1.2,
+   "source": {
+    "label": "Wikipedia: Edams Museum",
+    "url": "https://nl.wikipedia.org/wiki/Edams_Museum"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Edams_Museum",
+   "photos": [
+    {
+     "src": "history/06_0.jpg?v=daafb14c",
+     "credit": "Het Steenen Coopmanshuys in 2010, Arch (publiek domein)",
+     "url": "https://commons.wikimedia.org/wiki/File:Edam_-_Damplein_8jpg.jpg"
+    },
+    {
+     "src": "history/06_1.jpg?v=daafb14c",
+     "credit": "De drijvende kelder in 2020, Txllxt TxllxT, CC BY-SA 4.0",
+     "url": "https://commons.wikimedia.org/wiki/File:Edams_Museum_%281530%29_-_Interior_view_of_the_unique_floating_cellar.jpg"
+    }
+   ]
+  },
+  {
+   "n": 16,
+   "year": "nu",
+   "title": "Edam nu",
+   "text": "De binnenstad binnen de oude vesting is een beschermd stadsgezicht, met 176 rijksmonumenten. Edam vierde in 2007 zijn 650 jaar stadsrecht. Einde van de rondleiding.",
+   "x": 132058,
+   "y": 502806,
+   "h": 0,
+   "zoom": 0.3,
+   "source": {
+    "label": "Wikipedia: Edam",
+    "url": "https://nl.wikipedia.org/wiki/Edam"
+   },
+   "more": "https://nl.wikipedia.org/wiki/Edam",
+   "photos": []
+  }
+ ]
+}
